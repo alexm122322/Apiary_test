@@ -11,7 +11,7 @@
     <string name="expenses_title">Затраты</string>
     <string name="income_title">Прибыль</string>
     <string name="report_title">Отчет</string>
-    <string name="expenses_add_button_str">Добавить Расход</string>
+    <string name="expenses_add_button_str">Добавить</string>
 
 
     <string-array name="expenses_category">
