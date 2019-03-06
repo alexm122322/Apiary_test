@@ -1,5 +1,6 @@
 package com.example.test_2;
 
+import android.annotation.SuppressLint;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -19,26 +20,30 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link ExpensesFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link ExpensesFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+
 public class ExpensesFragment extends Fragment {
 
-    ArrayList<Category> categories=new ArrayList<>();
+    ArrayList<Category> categories;
     LiquidityAdapter liquidityAdapter;
+
+    public ExpensesFragment() {
+    }
+
     Resources res;
+
+    ArrayList<Integer> mIcons=new ArrayList<>();
+
+    @SuppressLint("ValidFragment")
+    public ExpensesFragment(ArrayList icons){
+        this.mIcons=icons;
+    }
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view=inflater.inflate(R.layout.fragment_expenses, container, false);
-        PieChart chart = (PieChart) view.findViewById(R.id.chart);
+       /* PieChart chart = (PieChart) view.findViewById(R.id.chart);
         List<PieEntry> entries = new ArrayList<>();
 
         entries.add(new PieEntry(18.5f, "Green"));
@@ -50,9 +55,12 @@ public class ExpensesFragment extends Fragment {
         set.setColors(new int[]{R.color.color1,R.color.color2,R.color.color3,R.color.color4},view.getContext());
         PieData data = new PieData(set);
         chart.setData(data);
-        chart.invalidate();
+        chart.invalidate();*/
+
+
 
         res=view.getResources();
+        categories=new ArrayList<>();
         fillData();
         liquidityAdapter=new LiquidityAdapter(view.getContext(),categories);
 
@@ -66,12 +74,14 @@ public class ExpensesFragment extends Fragment {
     void fillData(){
         String[] expensesCategory=res.getStringArray(R.array.expenses_category);
         Category c=new Category();
+        int i=0;
         for (String cat:expensesCategory){
             c.setCategoryName(cat);
             c.setCategoryData(1000);
-            c.setR(R.drawable.honey);
+            c.setR(mIcons.get(i));
             categories.add(c);
             c=new Category();
+            i++;
         }
 
     }
