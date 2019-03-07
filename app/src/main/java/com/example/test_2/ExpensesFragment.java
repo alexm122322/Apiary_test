@@ -3,10 +3,12 @@ package com.example.test_2;
 import android.annotation.SuppressLint;
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ListView;
 
 import com.github.mikephil.charting.charts.LineChart;
@@ -25,6 +27,7 @@ public class ExpensesFragment extends Fragment {
 
     ArrayList<Category> categories;
     LiquidityAdapter liquidityAdapter;
+    Button expencesAddButton;
 
     public ExpensesFragment() {
     }
@@ -57,8 +60,14 @@ public class ExpensesFragment extends Fragment {
         chart.setData(data);
         chart.invalidate();*/
 
-
-
+        expencesAddButton =view.findViewById(R.id.expences_add_button);
+        expencesAddButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DialogFragment expensesDialog=new ExpensesDialog();
+                expensesDialog.show(getFragmentManager(),"qwer");
+            }
+        });
         res=view.getResources();
         categories=new ArrayList<>();
         fillData();
