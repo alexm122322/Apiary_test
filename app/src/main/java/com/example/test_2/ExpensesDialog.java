@@ -3,6 +3,8 @@ package com.example.test_2;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -17,6 +19,8 @@ import android.widget.Spinner;
 
 public class ExpensesDialog extends DialogFragment {
     EditText mExpenceET, mCommentsET;
+    MainDatabase md;
+    SQLiteDatabase db;
 
     @NonNull
     @Override
@@ -36,16 +40,9 @@ public class ExpensesDialog extends DialogFragment {
         mExpenceET=(EditText) v.findViewById(R.id.expence_dialog_edit_text);
         mCommentsET=(EditText) v.findViewById(R.id.comments_dialog_edit_text);
 
-        final int mPosition=0;
-
-        spinner.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                mPosition=position;
-            }
-        });
-
-
+        final int[] mPosition = {0};
+        md=new MainDatabase(v.getContext());
+        db=md.getWritableDatabase();
 
 
         builder.setView(v)
