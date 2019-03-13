@@ -65,9 +65,9 @@ public class MainActivity extends AppCompatActivity {
 
     private void setupViewPaiger(){
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
-        mSectionsPagerAdapter.addFragmant(new ExpensesFragment(getIconArray("expenses")),getString(R.string.expenses_title));
-        mSectionsPagerAdapter.addFragmant(new ExpensesFragment(getIconArray("expenses")),getString(R.string.income_title));
-        mSectionsPagerAdapter.addFragmant(new ExpensesFragment(getIconArray("expenses")),getString(R.string.report_title));
+        mSectionsPagerAdapter.addFragmant(new ExpensesFragment(getIconArray(MainDatabase.thisExpence),MainDatabase.thisExpence),getString(R.string.expenses_title));
+        mSectionsPagerAdapter.addFragmant(new ExpensesFragment(getIconArray(MainDatabase.thisIncomne),MainDatabase.thisIncomne),getString(R.string.income_title));
+        mSectionsPagerAdapter.addFragmant(new ExpensesFragment(getIconArray(2),2),getString(R.string.report_title));
 
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
@@ -131,10 +131,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    public ArrayList<Integer> getIconArray(String fragment_type){
+    public ArrayList<Integer> getIconArray(int fragment_type){
         ArrayList<Integer> icons=new ArrayList<>();
         switch (fragment_type){
-            case "expenses":
+            case MainDatabase.thisExpence:
                 icons.add(R.drawable.big_bee);
                 icons.add(R.drawable.res);
                 icons.add(R.drawable.res);
@@ -142,6 +142,11 @@ public class MainActivity extends AppCompatActivity {
                 icons.add(R.drawable.beehive);
                 icons.add(R.drawable.bee);
                 icons.add(R.drawable.truck);
+                icons.add(R.drawable.drived);
+            case MainDatabase.thisIncomne:
+                icons.add(R.drawable.honey);
+                icons.add(R.drawable.wax);
+                icons.add(R.drawable.big_bee);
                 icons.add(R.drawable.drived);
                 default:
         }

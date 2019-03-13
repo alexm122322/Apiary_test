@@ -28,6 +28,11 @@ public class ExpensesFragment extends Fragment {
     ArrayList<Category> categories;
     LiquidityAdapter liquidityAdapter;
     Button expencesAddButton;
+    int type;
+
+    public void setType(int type) {
+        this.type = type;
+    }
 
     public ExpensesFragment() {
     }
@@ -37,8 +42,9 @@ public class ExpensesFragment extends Fragment {
     ArrayList<Integer> mIcons=new ArrayList<>();
 
     @SuppressLint("ValidFragment")
-    public ExpensesFragment(ArrayList icons){
+    public ExpensesFragment(ArrayList icons, int type){
         this.mIcons=icons;
+        this.type=type;
     }
 
 
@@ -81,10 +87,17 @@ public class ExpensesFragment extends Fragment {
     }
 
     void fillData(){
-        String[] expensesCategory=res.getStringArray(R.array.expenses_category);
+        String[] category;
+
+        if (type==MainDatabase.thisExpence)
+            category=res.getStringArray(R.array.expenses_category);
+        else
+            category=res.getStringArray(R.array.income_category);
+
+
         Category c=new Category();
         int i=0;
-        for (String cat:expensesCategory){
+        for (String cat:category){
             c.setCategoryName(cat);
             c.setCategoryData(1000);
             c.setR(mIcons.get(i));

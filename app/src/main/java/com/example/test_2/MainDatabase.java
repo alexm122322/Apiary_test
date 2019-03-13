@@ -8,10 +8,8 @@ import android.database.MatrixCursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.support.annotation.Nullable;
 import android.util.Log;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class MainDatabase extends SQLiteOpenHelper {
@@ -28,15 +26,16 @@ public class MainDatabase extends SQLiteOpenHelper {
     static final String incomeTypeRow="type";
     static final String incomeCategoryRow="category";
     static final String incomeCommentsRow="comments";
+    static final String incomeSumRow="sum";
     static final String incomeDateRow="date";
 
 
 
-    String[] categoryNames;
+    String[] expanceCategory, incomeCategory;
 
 
     public MainDatabase(Context context) {
-        super(context, "ApiDatabase", null, 1);
+        super(context, "ApiDatabase", null, 2);
         res=context.getResources();
     }
 
@@ -47,16 +46,24 @@ public class MainDatabase extends SQLiteOpenHelper {
                 "type integer ," +
                 "category integer," +
                 "comments text," +
+                "sum integer," +
                 "date numeric)");
         db.execSQL("create table Category (" +
                 "id integer primary key autoincrement," +
                 "type integer ," +
                 "name text)");
 
-        categoryNames=res.getStringArray(R.array.expenses_category);
+        expanceCategory =res.getStringArray(R.array.expenses_category);
+        incomeCategory= res.getStringArray(R.array.income_category);
 
-        for (String temp:categoryNames) {
+        for (String temp: expanceCategory) {
             contentValues.put(MainDatabase.categoryTypeRow,MainDatabase.thisExpence);
+            contentValues.put(MainDatabase.categoryNameRow, temp);
+            db.insert(MainDatabase.categoryTableName,null,contentValues);
+            contentValues.clear();
+        }
+        for (String temp: incomeCategory) {
+            contentValues.put(MainDatabase.categoryTypeRow,MainDatabase.thisIncomne);
             contentValues.put(MainDatabase.categoryNameRow, temp);
             db.insert(MainDatabase.categoryTableName,null,contentValues);
             contentValues.clear();
