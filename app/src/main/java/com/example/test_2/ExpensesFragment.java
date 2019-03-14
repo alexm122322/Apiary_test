@@ -5,6 +5,7 @@ import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,25 +29,21 @@ public class ExpensesFragment extends Fragment {
     ArrayList<Category> categories;
     LiquidityAdapter liquidityAdapter;
     Button expencesAddButton;
+    String LOGS="LOGS";
     int type;
-
-    public void setType(int type) {
-        this.type = type;
-    }
 
     public ExpensesFragment() {
     }
 
     Resources res;
 
-    ArrayList<Integer> mIcons=new ArrayList<>();
+    ArrayList<Integer> mIcons;
 
-    @SuppressLint("ValidFragment")
-    public ExpensesFragment(ArrayList icons, int type){
-        this.mIcons=icons;
-        this.type=type;
+    void getTypeIcons(){
+        Bundle bundle=this.getArguments();
+        this.type=bundle.getInt("type");
+        this.mIcons=bundle.getIntegerArrayList("icons");
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -87,20 +84,22 @@ public class ExpensesFragment extends Fragment {
     }
 
     void fillData(){
+        getTypeIcons();
         String[] category;
 
         if (type==MainDatabase.thisExpence)
             category=res.getStringArray(R.array.expenses_category);
         else
             category=res.getStringArray(R.array.income_category);
-
-
         Category c=new Category();
+
         int i=0;
         for (String cat:category){
             c.setCategoryName(cat);
             c.setCategoryData(1000);
+            Log.e(LOGS,String.valueOf(mIcons.size()));
             c.setR(mIcons.get(i));
+
             categories.add(c);
             c=new Category();
             i++;

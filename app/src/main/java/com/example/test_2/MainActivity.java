@@ -64,10 +64,25 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setupViewPaiger(){
+        Bundle bundle=new Bundle();
+        bundle.putInt("type", MainDatabase.thisExpence);
+        bundle.putIntegerArrayList("icons",getIconArray(MainDatabase.thisExpence));
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
-        mSectionsPagerAdapter.addFragmant(new ExpensesFragment(getIconArray(MainDatabase.thisExpence),MainDatabase.thisExpence),getString(R.string.expenses_title));
-        mSectionsPagerAdapter.addFragmant(new ExpensesFragment(getIconArray(MainDatabase.thisIncomne),MainDatabase.thisIncomne),getString(R.string.income_title));
-        mSectionsPagerAdapter.addFragmant(new ExpensesFragment(getIconArray(2),2),getString(R.string.report_title));
+        ExpensesFragment expensesFragment=new ExpensesFragment();
+        expensesFragment.setArguments(bundle);
+        mSectionsPagerAdapter.addFragmant(expensesFragment,getString(R.string.expenses_title));
+
+        bundle=new Bundle();
+        bundle.putInt("type", MainDatabase.thisIncomne);
+        bundle.putIntegerArrayList("icons",getIconArray(MainDatabase.thisIncomne));
+        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
+        expensesFragment=new ExpensesFragment();
+        expensesFragment.setArguments(bundle);
+        mSectionsPagerAdapter.addFragmant(expensesFragment,getString(R.string.income_title));
+
+
+
+        mSectionsPagerAdapter.addFragmant(new ExpensesFragment(),getString(R.string.report_title));
 
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
@@ -143,11 +158,13 @@ public class MainActivity extends AppCompatActivity {
                 icons.add(R.drawable.bee);
                 icons.add(R.drawable.truck);
                 icons.add(R.drawable.drived);
+                break;
             case MainDatabase.thisIncomne:
                 icons.add(R.drawable.honey);
                 icons.add(R.drawable.wax);
                 icons.add(R.drawable.big_bee);
                 icons.add(R.drawable.drived);
+                break;
                 default:
         }
         return icons;
