@@ -1,98 +1,55 @@
 package com.example.test_2;
 
-import android.content.Intent;
-import android.support.design.widget.TabLayout;
+import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.view.ViewPager;
-import android.os.Bundle;
-import android.view.LayoutInflater;
+import android.view.View;
+import android.support.design.widget.NavigationView;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
 
-import android.widget.TextView;
-import android.widget.Toast;
-
-import java.util.ArrayList;
-
-public class MainActivity extends AppCompatActivity {
-
-    /**
-     * The {@link android.support.v4.view.PagerAdapter} that will provide
-     * fragments for each of the sections. We use a
-     * {@link FragmentPagerAdapter} derivative, which will keep every
-     * loaded fragment in memory. If this becomes too memory intensive, it
-     * may be best to switch to a
-     * {@link android.support.v4.app.FragmentStatePagerAdapter}.
-     */
-    private SectionsPagerAdapter mSectionsPagerAdapter;
-
-    /**
-     * The {@link ViewPager} that will host the section contents.
-     */
-    private ViewPager mViewPager;
+public class MainActivity extends AppCompatActivity
+        implements NavigationView.OnNavigationItemSelectedListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        // Create the adapter that will return a fragment for each of the three
-        // primary sections of the activity.
-
-        // Set up the ViewPager with the sections adapter.
-        mViewPager = (ViewPager) findViewById(R.id.container);
-        setupViewPaiger();
 
 
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.addDrawerListener(toggle);
+        toggle.syncState();
 
-        mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
-        tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
-
-
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
     }
 
-    private void setupViewPaiger(){
-        Bundle bundle=new Bundle();
-        bundle.putInt("type", MainDatabase.thisExpence);
-        bundle.putIntegerArrayList("icons",getIconArray(MainDatabase.thisExpence));
-        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
-        ExpensesFragment expensesFragment=new ExpensesFragment();
-        expensesFragment.setArguments(bundle);
-        mSectionsPagerAdapter.addFragmant(expensesFragment,getString(R.string.expenses_title));
-
-        bundle=new Bundle();
-        bundle.putInt("type", MainDatabase.thisIncomne);
-        bundle.putIntegerArrayList("icons",getIconArray(MainDatabase.thisIncomne));
-        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
-        expensesFragment=new ExpensesFragment();
-        expensesFragment.setArguments(bundle);
-        mSectionsPagerAdapter.addFragmant(expensesFragment,getString(R.string.income_title));
-
-
-
-        mSectionsPagerAdapter.addFragmant(new ExpensesFragment(),getString(R.string.report_title));
-
-        mViewPager.setAdapter(mSectionsPagerAdapter);
-
+    @Override
+    public void onBackPressed() {
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+        getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
 
@@ -105,69 +62,46 @@ public class MainActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            Intent dbmanager = new Intent(this,AndroidDatabaseManager.class);
-            startActivity(dbmanager);
             return true;
         }
 
         return super.onOptionsItemSelected(item);
     }
 
+    @SuppressWarnings("StatementWithEmptyBody")
+    @Override
+    public boolean onNavigationItemSelected(MenuItem item) {
+        Fragment fragment = null;
+        Class fragmentClass = null;
+        // Handle navigation view item clicks here.
+        int id = item.getItemId();
 
-    /**
-     * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
-     * one of the sections/tabs/pages.
-     */
-    public class SectionsPagerAdapter extends FragmentPagerAdapter {
-        public ArrayList<Fragment> listOfFragment=new ArrayList<>();
-        public ArrayList<String> listOfFragmentTitle=new ArrayList<>();
-
-        public void addFragmant(Fragment fragment, String fragmentTitle){
-            listOfFragment.add(fragment);
-            listOfFragmentTitle.add(fragmentTitle);
-
+        if (id == R.id.nav_camera) {
+            fragmentClass=BlankFragment.class;
+        } else if (id == R.id.nav_gallery) {
+            fragmentClass=BlankFragment.class;
+        } else if (id == R.id.nav_slideshow) {
+            fragmentClass=BlankFragment.class;
+        } else if (id == R.id.nav_manage) {
+            fragmentClass=BlankFragment.class;
+        } else if (id == R.id.nav_share) {
+            fragmentClass=BlankFragment.class;
+        } else if (id == R.id.nav_send) {
+            fragmentClass=BlankFragment.class;
         }
-
-        public SectionsPagerAdapter(FragmentManager fm) {
-            super(fm);
+        try {
+            fragment=(Fragment) fragmentClass.newInstance();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (InstantiationException e) {
+            e.printStackTrace();
         }
+        FragmentManager fragmentManager=getSupportFragmentManager();
+        fragmentManager.beginTransaction().replace(R.id.contenador,fragment).commit();
+        item.setChecked(true);
 
-        @Override
-        public Fragment getItem(int position) {
-
-            return listOfFragment.get(position);
-        }
-
-        @Override
-        public int getCount() {
-
-            return listOfFragment.size();
-        }
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
     }
-
-
-    public ArrayList<Integer> getIconArray(int fragment_type){
-        ArrayList<Integer> icons=new ArrayList<>();
-        switch (fragment_type){
-            case MainDatabase.thisExpence:
-                icons.add(R.drawable.big_bee);
-                icons.add(R.drawable.res);
-                icons.add(R.drawable.res);
-                icons.add(R.drawable.wax);
-                icons.add(R.drawable.beehive);
-                icons.add(R.drawable.bee);
-                icons.add(R.drawable.truck);
-                icons.add(R.drawable.drived);
-                break;
-            case MainDatabase.thisIncomne:
-                icons.add(R.drawable.honey);
-                icons.add(R.drawable.wax);
-                icons.add(R.drawable.big_bee);
-                icons.add(R.drawable.drived);
-                break;
-                default:
-        }
-        return icons;
-    }
-
 }

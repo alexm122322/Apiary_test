@@ -10,7 +10,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.Toolbar;
 
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.charts.PieChart;
@@ -30,7 +32,9 @@ public class ExpensesFragment extends Fragment {
     LiquidityAdapter liquidityAdapter;
     Button expencesAddButton;
     String LOGS="LOGS";
+    LinearLayout linearLayout;
     int type;
+    Toolbar toolbar;
 
     public ExpensesFragment() {
     }
@@ -40,7 +44,7 @@ public class ExpensesFragment extends Fragment {
     ArrayList<Integer> mIcons;
 
     void getTypeIcons(){
-        Bundle bundle=this.getArguments();
+        Bundle bundle=getArguments();
         this.type=bundle.getInt("type");
         this.mIcons=bundle.getIntegerArrayList("icons");
     }
@@ -78,6 +82,10 @@ public class ExpensesFragment extends Fragment {
 
         ListView liquidityList=(ListView)view.findViewById(R.id.liquidity_list);
         liquidityList.setAdapter(liquidityAdapter);
+        linearLayout =(LinearLayout) view.findViewById(R.id.listLinearLayout);
+        ViewGroup.MarginLayoutParams params=(ViewGroup.MarginLayoutParams)linearLayout.getLayoutParams();
+        params.setMargins(params.leftMargin,params.topMargin,params.rightMargin,expencesAddButton.getHeight()+150);
+        linearLayout.setLayoutParams(params);
 
         return view;
 
