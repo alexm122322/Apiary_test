@@ -30,7 +30,7 @@ public class MainDatabase extends SQLiteOpenHelper {
     static final String incomeDateRow="date";
 
 
-
+    SQLiteDatabase db=this.getWritableDatabase();
     String[] expanceCategory, incomeCategory;
 
 
@@ -41,6 +41,8 @@ public class MainDatabase extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
+
+
         db.execSQL("create table Income (" +
                 "id integer primary key autoincrement," +
                 "type integer ," +
@@ -72,12 +74,76 @@ public class MainDatabase extends SQLiteOpenHelper {
 
 
 
+
+
+    }
+
+
+
+    public int readDate(ReadType type){
+        //ArrayList<String> list=new ArrayList<>();
+
+        int sum=0;
+        Cursor c=null;
+        switch (type){
+            case SumOfIncome:
+            c=db.query(MainDatabase.incomeTableName,
+                    new String[]{MainDatabase.incomeSumRow},
+                    MainDatabase.incomeTypeRow+"="+String.valueOf(MainDatabase.thisIncomne),
+                    null,
+                    null,
+                    null,
+                    null);
+                break;
+            case SumOfExpence:
+                c=db.query(MainDatabase.incomeTableName,
+                        new String[]{MainDatabase.incomeSumRow},
+                        MainDatabase.incomeTypeRow+" = "+String.valueOf(MainDatabase.thisExpence),
+                        null,
+                        null,
+                        null,
+                        null);
+                break;
+        }
+        if(c!=null){
+            if(c.moveToFirst()){
+                sum=c.getInt(0);
+                while (c.moveToNext())
+                    sum+=c.getInt(0);
+            }
+        }
+        return sum;
+    }
+
+    public ArrayList<ArrayList<Integer>> readDate(int type) {
+        Cursor c=null;
+        ArrayList<Integer> row=new ArrayList<>();
+        ArrayList<ArrayList<Integer>> list=new ArrayList<>();
+        c=db.query(MainDatabase.incomeTableName,
+                new String[]{MainDatabase.incomeCategoryRow,MainDatabase.incomeSumRow},
+                null,
+                null,
+                null,
+                null,
+                null );
+        if(c!=null) {
+            if(c.moveToFirst()){
+
+               do{
+
+
+                }while (c.moveToNext());
+                }
+            }
+        }
+        return list;
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 
     }
+
 
 
     public ArrayList<Cursor> getData(String Query){
@@ -124,4 +190,8 @@ public class MainDatabase extends SQLiteOpenHelper {
         }
     }
 
+}
+enum ReadType{
+    SumOfExpence,
+    SumOfIncome
 }

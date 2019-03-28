@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toolbar;
 
 import com.github.mikephil.charting.charts.LineChart;
@@ -35,6 +36,7 @@ public class ExpensesFragment extends Fragment {
     LinearLayout linearLayout;
     int type;
     Toolbar toolbar;
+    TextView sum;
 
     public ExpensesFragment() {
     }
@@ -86,7 +88,10 @@ public class ExpensesFragment extends Fragment {
         ViewGroup.MarginLayoutParams params=(ViewGroup.MarginLayoutParams)linearLayout.getLayoutParams();
         params.setMargins(params.leftMargin,params.topMargin,params.rightMargin,expencesAddButton.getHeight()+150);
         linearLayout.setLayoutParams(params);
-
+        //--------------set_sum_of_expence--------------------------------
+        sum=(TextView) view.findViewById(R.id.text_sum);
+        sum.setText(String.valueOf(new MainDatabase(getActivity()).readDate(ReadType.SumOfExpence))+" грн");
+        //----------------------------------------------------------------
         return view;
 
     }

@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
@@ -21,6 +22,7 @@ public class IncomeFragment extends Fragment {
     Button expencesAddButton;
     String LOGS="LOGS";
     int type;
+    TextView sum;
 
     public IncomeFragment() {
     }
@@ -68,6 +70,11 @@ public class IncomeFragment extends Fragment {
 
         ListView liquidityList=(ListView)view.findViewById(R.id.liquidity_list);
         liquidityList.setAdapter(liquidityAdapter);
+
+        //--------------set_sum_of_expence--------------------------------
+        sum=(TextView) view.findViewById(R.id.text_sum);
+        sum.setText(String.valueOf(new MainDatabase(getActivity()).readDate(ReadType.SumOfIncome))+" грн");
+        //----------------------------------------------------------------
 
         return view;
 
