@@ -74,6 +74,7 @@ public class ExpensesFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 DialogFragment expensesDialog=new ExpensesDialog();
+                ((ExpensesDialog) expensesDialog).setType(MainDatabase.thisExpence);
                 expensesDialog.show(getFragmentManager(),"qwer");
             }
         });
@@ -105,11 +106,12 @@ public class ExpensesFragment extends Fragment {
         else
             category=res.getStringArray(R.array.income_category);
         Category c=new Category();
-
+        ArrayList<ArrayList<Integer>> list=(new MainDatabase(getActivity())).readDate(MainDatabase.thisExpence);
+        Log.e("SIZE_EXP",String.valueOf(list.get(0).size()));
         int i=0;
         for (String cat:category){
             c.setCategoryName(cat);
-            c.setCategoryData(1000);
+            c.setCategoryData(list.get(i).get(1));
             Log.e(LOGS,String.valueOf(mIcons.size()));
             c.setR(mIcons.get(i));
 

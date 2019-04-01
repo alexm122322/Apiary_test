@@ -60,6 +60,7 @@ public class IncomeFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 DialogFragment expensesDialog=new ExpensesDialog();
+                ((ExpensesDialog) expensesDialog).setType(MainDatabase.thisIncomne);
                 expensesDialog.show(getFragmentManager(),"qwer");
             }
         });
@@ -89,11 +90,11 @@ public class IncomeFragment extends Fragment {
         else
             category=res.getStringArray(R.array.income_category);
         Category c=new Category();
-
+        ArrayList<ArrayList<Integer>>list=(new MainDatabase(getActivity())).readDate(MainDatabase.thisIncomne);
         int i=0;
         for (String cat:category){
             c.setCategoryName(cat);
-            c.setCategoryData(1000);
+            c.setCategoryData(list.get(i).get(1));
             Log.e(LOGS,String.valueOf(mIcons.size()));
             c.setR(mIcons.get(i));
 

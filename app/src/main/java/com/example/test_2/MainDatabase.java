@@ -29,7 +29,6 @@ public class MainDatabase extends SQLiteOpenHelper {
     static final String incomeSumRow="sum";
     static final String incomeDateRow="date";
 
-
     SQLiteDatabase db=this.getWritableDatabase();
     String[] expanceCategory, incomeCategory;
 
@@ -55,21 +54,7 @@ public class MainDatabase extends SQLiteOpenHelper {
                 "type integer ," +
                 "name text)");
 
-        expanceCategory =res.getStringArray(R.array.expenses_category);
-        incomeCategory= res.getStringArray(R.array.income_category);
 
-        for (String temp: expanceCategory) {
-            contentValues.put(MainDatabase.categoryTypeRow,MainDatabase.thisExpence);
-            contentValues.put(MainDatabase.categoryNameRow, temp);
-            db.insert(MainDatabase.categoryTableName,null,contentValues);
-            contentValues.clear();
-        }
-        for (String temp: incomeCategory) {
-            contentValues.put(MainDatabase.categoryTypeRow,MainDatabase.thisIncomne);
-            contentValues.put(MainDatabase.categoryNameRow, temp);
-            db.insert(MainDatabase.categoryTableName,null,contentValues);
-            contentValues.clear();
-        }
 
 
 
@@ -117,25 +102,40 @@ public class MainDatabase extends SQLiteOpenHelper {
 
     public ArrayList<ArrayList<Integer>> readDate(int type) {
         Cursor c=null;
+        String[] catData=null;
         ArrayList<Integer> row=new ArrayList<>();
         ArrayList<ArrayList<Integer>> list=new ArrayList<>();
+
+        if(type==thisExpence)
+            catData=res.getStringArray(R.array.expenses_category);
+        else if(type==thisIncomne)
+            catData=res.getStringArray(R.array.income_category);
+        for (int i=0;i<catData.length;i++) {
+            row.add(i);
+            row.add(0);
+            list.add(row);
+            row=new ArrayList<>();
+            Log.e("TAG","0");
+        }
         c=db.query(MainDatabase.incomeTableName,
                 new String[]{MainDatabase.incomeCategoryRow,MainDatabase.incomeSumRow},
-                null,
+                incomeTypeRow+"="+String.valueOf(type),
                 null,
                 null,
                 null,
                 null );
         if(c!=null) {
             if(c.moveToFirst()){
-
                do{
-
-
+                   row.add(c.getInt(0));
+                   row.add(list.get(c.getInt(0)).get(1)+c.getInt(1));
+                   list.set(c.getInt(0),row);
+                   row=new ArrayList<>();
+                   Log.e("TAG","1");
                 }while (c.moveToNext());
-                }
             }
-        }
+            }
+        Log.e("SIZE",String.valueOf(list.size()));
         return list;
     }
 

@@ -67,7 +67,7 @@ public class ExpensesDialog extends DialogFragment {
                 .setPositiveButton("Добавить", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                cv.put(MainDatabase.incomeTypeRow,MainDatabase.thisExpence);
+                cv.put(MainDatabase.incomeTypeRow,type);
                 cv.put(MainDatabase.incomeCategoryRow,spinner.getSelectedItemId());
                 cv.put(MainDatabase.incomeCommentsRow,mCommentsET.getText().toString());
                 cv.put(MainDatabase.incomeDateRow,currentTime.getTime());
