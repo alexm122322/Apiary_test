@@ -113,10 +113,10 @@ public class BlankFragment extends Fragment {
         setupViewPaiger();
         viewPager.setAdapter(mSectionsPagerAdapter1);
         tabs.setupWithViewPager(viewPager);
-        Toast.makeText(v.getContext(),String.valueOf(appBarLayout.getHeight()) , Toast.LENGTH_SHORT).show();
+        Toast.makeText(v.getContext(),String.valueOf(appBarLayout.getHeight())+"  "+String.valueOf(toolbar.getHeight()) , Toast.LENGTH_SHORT).show();
         frameLayout=(RelativeLayout)v.findViewById(R.id.frameLayoutId);
         ViewGroup.MarginLayoutParams params=(ViewGroup.MarginLayoutParams) frameLayout.getLayoutParams();
-        params.setMargins(params.leftMargin,appBarLayout.getHeight()+toolbar.getHeight(),params.rightMargin,params.bottomMargin);
+        params.setMargins(params.leftMargin,toolbar.getHeight()+toolbar.getHeight(),params.rightMargin,params.bottomMargin);
         frameLayout.setLayoutParams(params);
         return v;
     }

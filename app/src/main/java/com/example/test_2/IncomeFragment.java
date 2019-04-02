@@ -68,6 +68,7 @@ public class IncomeFragment extends Fragment {
             public void onClick(View v) {
                 DialogFragment expensesDialog=new ExpensesDialog();
                 ((ExpensesDialog) expensesDialog).setType(Income.thisIncome);
+                ((ExpensesDialog) expensesDialog).setCurrentFragment(IncomeFragment.this);
                 expensesDialog.show(getFragmentManager(),"qwer");
             }
         });
@@ -91,7 +92,7 @@ public class IncomeFragment extends Fragment {
         fillData();
         liquidityAdapter.setObjects(categories);
         liquidityAdapter.notifyDataSetChanged();
-        sum.setText(String.valueOf(income.readDate(ReadType.SumOfExpence))+" грн");
+        sum.setText(String.valueOf(income.readDate(ReadType.SumOfIncome))+" грн");
     }
     void fillData(){
         getTypeIcons();

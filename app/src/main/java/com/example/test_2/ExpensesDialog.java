@@ -84,6 +84,8 @@ public class ExpensesDialog extends DialogFragment {
                 Toast.makeText(v.getContext(), mExpenceET.getText().toString(), Toast.LENGTH_SHORT).show();
                 if(type==Income.thisExpence)
                     ((ExpensesFragment)currentFragment).updateList();
+                else if(type==Income.thisIncome)
+                    ((IncomeFragment) currentFragment).updateList();
             }
         })
         .setNegativeButton("Отмена", new DialogInterface.OnClickListener() {

@@ -2,16 +2,19 @@ package com.example.test_2;
 
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.Toolbar;
 
 import com.example.test_2.Data.Category;
@@ -64,6 +67,7 @@ public class ExpensesFragment extends Fragment {
         chart.setData(data);
         chart.invalidate();*/
         income=new Income(getActivity());
+        final int[] expencesAddButtonHeight = {0};
 
         expencesAddButton =view.findViewById(R.id.expences_add_button);
         expencesAddButton.setOnClickListener(new View.OnClickListener() {
@@ -75,22 +79,51 @@ public class ExpensesFragment extends Fragment {
                 expensesDialog.show(getFragmentManager(),"qwer");
             }
         });
+
+
+
+
+
         res=view.getResources();
         categories=new ArrayList<>();
         fillData();
         liquidityAdapter=new LiquidityAdapter(view.getContext(),categories);
 
+
         liquidityList=(ListView)view.findViewById(R.id.liquidity_list);
         liquidityList.setAdapter(liquidityAdapter);
         linearLayout =(LinearLayout) view.findViewById(R.id.listLinearLayout);
-        ViewGroup.MarginLayoutParams params=(ViewGroup.MarginLayoutParams)linearLayout.getLayoutParams();
-        params.setMargins(params.leftMargin,params.topMargin,params.rightMargin,expencesAddButton.getHeight()+150);
-        linearLayout.setLayoutParams(params);
+
+
+        ViewTreeObserver vto = expencesAddButton.getViewTreeObserver();
+        vto.addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+            @Override
+            public boolean onPreDraw() {
+                expencesAddButton.getViewTreeObserver().removeOnPreDrawListener(this);
+                ViewGroup.MarginLayoutParams params=(ViewGroup.MarginLayoutParams)linearLayout.getLayoutParams();
+                params.setMargins(params.leftMargin,params.topMargin,params.rightMargin,expencesAddButton.getMeasuredHeight());
+                linearLayout.setLayoutParams(params);
+                return true;
+            }
+        });
+
         //--------------set_sum_of_expence--------------------------------
         sum=(TextView) view.findViewById(R.id.text_sum);
         sum.setText(String.valueOf(income.readDate(ReadType.SumOfExpence))+" грн");
         //----------------------------------------------------------------
         return view;
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
     }
 
     void updateList(){
