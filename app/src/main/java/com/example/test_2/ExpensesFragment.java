@@ -1,6 +1,5 @@
 package com.example.test_2;
 
-import android.annotation.SuppressLint;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
@@ -13,19 +12,12 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 import android.widget.Toolbar;
 
-import com.github.mikephil.charting.charts.LineChart;
-import com.github.mikephil.charting.charts.PieChart;
-import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.data.PieData;
-import com.github.mikephil.charting.data.PieDataSet;
-import com.github.mikephil.charting.data.PieEntry;
+import com.example.test_2.Data.Category;
+import com.example.test_2.Data.Income;
 
 import java.util.ArrayList;
-import java.util.List;
-
 
 
 public class ExpensesFragment extends Fragment {
@@ -40,6 +32,8 @@ public class ExpensesFragment extends Fragment {
     TextView sum;
     Resources res;
     ArrayList<Integer> mIcons;
+    Income income;
+    ListView liquidityList;
 
     public ExpensesFragment() {
     }
@@ -69,12 +63,15 @@ public class ExpensesFragment extends Fragment {
         PieData data = new PieData(set);
         chart.setData(data);
         chart.invalidate();*/
+        income=new Income(getActivity());
 
         expencesAddButton =view.findViewById(R.id.expences_add_button);
         expencesAddButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 DialogFragment expensesDialog=new ExpensesDialog();
+                ((ExpensesDialog) expensesDialog).setType(Income.thisExpence);
+                ((ExpensesDialog) expensesDialog).setCurrentFragment(ExpensesFragment.this);
                 expensesDialog.show(getFragmentManager(),"qwer");
             }
         });
@@ -83,7 +80,7 @@ public class ExpensesFragment extends Fragment {
         fillData();
         liquidityAdapter=new LiquidityAdapter(view.getContext(),categories);
 
-        ListView liquidityList=(ListView)view.findViewById(R.id.liquidity_list);
+        liquidityList=(ListView)view.findViewById(R.id.liquidity_list);
         liquidityList.setAdapter(liquidityAdapter);
         linearLayout =(LinearLayout) view.findViewById(R.id.listLinearLayout);
         ViewGroup.MarginLayoutParams params=(ViewGroup.MarginLayoutParams)linearLayout.getLayoutParams();
@@ -91,31 +88,35 @@ public class ExpensesFragment extends Fragment {
         linearLayout.setLayoutParams(params);
         //--------------set_sum_of_expence--------------------------------
         sum=(TextView) view.findViewById(R.id.text_sum);
-        sum.setText(String.valueOf(new MainDatabase(getActivity()).readDate(ReadType.SumOfExpence))+" грн");
+        sum.setText(String.valueOf(income.readDate(ReadType.SumOfExpence))+" грн");
         //----------------------------------------------------------------
         return view;
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        Toast.makeText(getActivity(), "OnResume", Toast.LENGTH_SHORT).show();
+    void updateList(){
+        fillData();
+        liquidityAdapter.setObjects(categories);
+        liquidityAdapter.notifyDataSetChanged();
+        sum.setText(String.valueOf(income.readDate(ReadType.SumOfExpence))+" грн");
     }
+
 
     void fillData(){
         getTypeIcons();
+        categories=new ArrayList<>();
         String[] category;
 
-        if (type==MainDatabase.thisExpence)
+        if (type==Income.thisExpence)
             category=res.getStringArray(R.array.expenses_category);
         else
             category=res.getStringArray(R.array.income_category);
         Category c=new Category();
-
+        ArrayList<ArrayList<Integer>> list=(income.readDate(Income.thisExpence));
+        Log.e("SIZE_EXP",String.valueOf(list.get(0).size()));
         int i=0;
         for (String cat:category){
             c.setCategoryName(cat);
-            c.setCategoryData(1000);
+            c.setCategoryData(list.get(i).get(1));
             Log.e(LOGS,String.valueOf(mIcons.size()));
             c.setR(mIcons.get(i));
 

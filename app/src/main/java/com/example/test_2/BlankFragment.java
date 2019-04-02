@@ -20,6 +20,8 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 import android.support.v7.widget.Toolbar;
 
+import com.example.test_2.Data.Income;
+
 import java.util.ArrayList;
 
 
@@ -58,15 +60,15 @@ public class BlankFragment extends Fragment {
 
 
         Bundle bundle=new Bundle();
-        bundle.putInt("type", MainDatabase.thisExpence);
-        bundle.putIntegerArrayList("icons",getIconArray(MainDatabase.thisExpence));
+        bundle.putInt("type", Income.thisExpence);
+        bundle.putIntegerArrayList("icons",getIconArray(Income.thisExpence));
         ExpensesFragment expensesFragment=new ExpensesFragment();
         expensesFragment.setArguments(bundle);
         mSectionsPagerAdapter1.addFragmant(expensesFragment,getString(R.string.expenses_title));
 
         Bundle bundle1=new Bundle();
-        bundle1.putInt("type", MainDatabase.thisIncomne);
-        bundle1.putIntegerArrayList("icons",getIconArray(MainDatabase.thisIncomne));
+        bundle1.putInt("type", Income.thisIncome);
+        bundle1.putIntegerArrayList("icons",getIconArray(Income.thisIncome));
         IncomeFragment incomeFragment=new IncomeFragment();
         incomeFragment.setArguments(bundle1);
         mSectionsPagerAdapter1.addFragmant(incomeFragment,getString(R.string.income_title));
@@ -144,7 +146,7 @@ public class BlankFragment extends Fragment {
     public ArrayList<Integer> getIconArray(int fragment_type){
         ArrayList<Integer> icons=new ArrayList<>();
         switch (fragment_type){
-            case MainDatabase.thisExpence:
+            case Income.thisExpence:
                 icons.add(R.drawable.big_bee);
                 icons.add(R.drawable.res);
                 icons.add(R.drawable.res);
@@ -154,7 +156,7 @@ public class BlankFragment extends Fragment {
                 icons.add(R.drawable.truck);
                 icons.add(R.drawable.drived);
                 break;
-            case MainDatabase.thisIncomne:
+            case Income.thisIncome:
                 icons.add(R.drawable.honey);
                 icons.add(R.drawable.wax);
                 icons.add(R.drawable.big_bee);

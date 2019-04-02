@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,6 +19,8 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
+
+import com.example.test_2.Data.Income;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -29,7 +32,11 @@ public class ExpensesDialog extends DialogFragment {
     ContentValues cv;
     Date currentTime= Calendar.getInstance().getTime();
     int type;
+    Fragment currentFragment;
 
+    public void setCurrentFragment(Fragment currentFragment) {
+        this.currentFragment = currentFragment;
+    }
 
     public void setType(int type) {
         this.type = type;
@@ -43,7 +50,8 @@ public class ExpensesDialog extends DialogFragment {
         Log.i("RRR","Dialog runned");
         final View v=inflater.inflate(R.layout.expenses_dialog,null);
         String[] data;
-        if(type==MainDatabase.thisExpence)
+
+        if(type==Income.thisExpence)
             data=getResources().getStringArray(R.array.expenses_category);
         else
             data=getResources().getStringArray(R.array.income_category);
@@ -67,13 +75,15 @@ public class ExpensesDialog extends DialogFragment {
                 .setPositiveButton("Добавить", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                cv.put(MainDatabase.incomeTypeRow,MainDatabase.thisExpence);
-                cv.put(MainDatabase.incomeCategoryRow,spinner.getSelectedItemId());
-                cv.put(MainDatabase.incomeCommentsRow,mCommentsET.getText().toString());
-                cv.put(MainDatabase.incomeDateRow,currentTime.getTime());
-                cv.put(MainDatabase.incomeSumRow,Integer.parseInt(mExpenceET.getText().toString()));
-                db.insert(MainDatabase.incomeTableName,null,cv);
+                cv.put(Income.typeRow,type);
+                cv.put(Income.categoryRow,spinner.getSelectedItemId());
+                cv.put(Income.commentsRow,mCommentsET.getText().toString());
+                cv.put(Income.dateRow,currentTime.getTime());
+                cv.put(Income.sumRow,Integer.parseInt(mExpenceET.getText().toString()));
+                db.insert(Income.tableName,null,cv);
                 Toast.makeText(v.getContext(), mExpenceET.getText().toString(), Toast.LENGTH_SHORT).show();
+                if(type==Income.thisExpence)
+                    ((ExpensesFragment)currentFragment).updateList();
             }
         })
         .setNegativeButton("Отмена", new DialogInterface.OnClickListener() {

@@ -14,29 +14,18 @@ import java.util.ArrayList;
 
 public class MainDatabase extends SQLiteOpenHelper {
     ContentValues contentValues=new ContentValues();
-    Resources res;
+
 
     static final String categoryTableName="Category";
     static final String categoryTypeRow="type";
     static final String categoryNameRow="name";
-    static final int thisExpence=0;
-    static final int thisIncomne=1;
 
-    static final String incomeTableName="Income";
-    static final String incomeTypeRow="type";
-    static final String incomeCategoryRow="category";
-    static final String incomeCommentsRow="comments";
-    static final String incomeSumRow="sum";
-    static final String incomeDateRow="date";
-
-
-    SQLiteDatabase db=this.getWritableDatabase();
     String[] expanceCategory, incomeCategory;
 
 
     public MainDatabase(Context context) {
         super(context, "ApiDatabase", null, 2);
-        res=context.getResources();
+
     }
 
     @Override
@@ -55,21 +44,7 @@ public class MainDatabase extends SQLiteOpenHelper {
                 "type integer ," +
                 "name text)");
 
-        expanceCategory =res.getStringArray(R.array.expenses_category);
-        incomeCategory= res.getStringArray(R.array.income_category);
 
-        for (String temp: expanceCategory) {
-            contentValues.put(MainDatabase.categoryTypeRow,MainDatabase.thisExpence);
-            contentValues.put(MainDatabase.categoryNameRow, temp);
-            db.insert(MainDatabase.categoryTableName,null,contentValues);
-            contentValues.clear();
-        }
-        for (String temp: incomeCategory) {
-            contentValues.put(MainDatabase.categoryTypeRow,MainDatabase.thisIncomne);
-            contentValues.put(MainDatabase.categoryNameRow, temp);
-            db.insert(MainDatabase.categoryTableName,null,contentValues);
-            contentValues.clear();
-        }
 
 
 
@@ -80,64 +55,6 @@ public class MainDatabase extends SQLiteOpenHelper {
 
 
 
-    public int readDate(ReadType type){
-        //ArrayList<String> list=new ArrayList<>();
-
-        int sum=0;
-        Cursor c=null;
-        switch (type){
-            case SumOfIncome:
-            c=db.query(MainDatabase.incomeTableName,
-                    new String[]{MainDatabase.incomeSumRow},
-                    MainDatabase.incomeTypeRow+"="+String.valueOf(MainDatabase.thisIncomne),
-                    null,
-                    null,
-                    null,
-                    null);
-                break;
-            case SumOfExpence:
-                c=db.query(MainDatabase.incomeTableName,
-                        new String[]{MainDatabase.incomeSumRow},
-                        MainDatabase.incomeTypeRow+" = "+String.valueOf(MainDatabase.thisExpence),
-                        null,
-                        null,
-                        null,
-                        null);
-                break;
-        }
-        if(c!=null){
-            if(c.moveToFirst()){
-                sum=c.getInt(0);
-                while (c.moveToNext())
-                    sum+=c.getInt(0);
-            }
-        }
-        return sum;
-    }
-
-    public ArrayList<ArrayList<Integer>> readDate(int type) {
-        Cursor c=null;
-        ArrayList<Integer> row=new ArrayList<>();
-        ArrayList<ArrayList<Integer>> list=new ArrayList<>();
-        c=db.query(MainDatabase.incomeTableName,
-                new String[]{MainDatabase.incomeCategoryRow,MainDatabase.incomeSumRow},
-                null,
-                null,
-                null,
-                null,
-                null );
-        if(c!=null) {
-            if(c.moveToFirst()){
-
-               do{
-
-
-                }while (c.moveToNext());
-                }
-            }
-        }
-        return list;
-    }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
@@ -191,7 +108,4 @@ public class MainDatabase extends SQLiteOpenHelper {
     }
 
 }
-enum ReadType{
-    SumOfExpence,
-    SumOfIncome
-}
+

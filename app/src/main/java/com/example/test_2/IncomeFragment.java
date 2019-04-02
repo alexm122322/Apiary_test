@@ -9,27 +9,34 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toolbar;
+
+import com.example.test_2.Data.Category;
+import com.example.test_2.Data.Income;
 
 import java.util.ArrayList;
 
 
 public class IncomeFragment extends Fragment {
 
+
     ArrayList<Category> categories;
     LiquidityAdapter liquidityAdapter;
     Button expencesAddButton;
     String LOGS="LOGS";
+    LinearLayout linearLayout;
     int type;
+    Toolbar toolbar;
     TextView sum;
-
+    Resources res;
+    ArrayList<Integer> mIcons;
+    Income income;
+    ListView liquidityList;
     public IncomeFragment() {
     }
-
-    Resources res;
-
-    ArrayList<Integer> mIcons;
 
     void getTypeIcons(){
         Bundle bundle=getArguments();
@@ -54,12 +61,13 @@ public class IncomeFragment extends Fragment {
         PieData data = new PieData(set);
         chart.setData(data);
         chart.invalidate();*/
-
+        income=new Income(getActivity());
         expencesAddButton =view.findViewById(R.id.expences_add_button);
         expencesAddButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 DialogFragment expensesDialog=new ExpensesDialog();
+                ((ExpensesDialog) expensesDialog).setType(Income.thisIncome);
                 expensesDialog.show(getFragmentManager(),"qwer");
             }
         });
@@ -73,27 +81,32 @@ public class IncomeFragment extends Fragment {
 
         //--------------set_sum_of_expence--------------------------------
         sum=(TextView) view.findViewById(R.id.text_sum);
-        sum.setText(String.valueOf(new MainDatabase(getActivity()).readDate(ReadType.SumOfIncome))+" грн");
+        sum.setText(String.valueOf(income.readDate(ReadType.SumOfIncome))+" грн");
         //----------------------------------------------------------------
 
         return view;
 
     }
-
+    void updateList(){
+        fillData();
+        liquidityAdapter.setObjects(categories);
+        liquidityAdapter.notifyDataSetChanged();
+        sum.setText(String.valueOf(income.readDate(ReadType.SumOfExpence))+" грн");
+    }
     void fillData(){
         getTypeIcons();
         String[] category;
-
-        if (type==MainDatabase.thisExpence)
+        categories=new ArrayList<>();
+        if (type==Income.thisExpence)
             category=res.getStringArray(R.array.expenses_category);
         else
             category=res.getStringArray(R.array.income_category);
         Category c=new Category();
-
+        ArrayList<ArrayList<Integer>>list=(income.readDate(Income.thisIncome));
         int i=0;
         for (String cat:category){
             c.setCategoryName(cat);
-            c.setCategoryData(1000);
+            c.setCategoryData(list.get(i).get(1));
             Log.e(LOGS,String.valueOf(mIcons.size()));
             c.setR(mIcons.get(i));
 

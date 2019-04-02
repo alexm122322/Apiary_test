@@ -8,8 +8,9 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.test_2.Data.Category;
+
 import java.util.ArrayList;
-import java.util.zip.Inflater;
 
 public class LiquidityAdapter extends BaseAdapter {
     Context ctx;
@@ -22,6 +23,11 @@ public class LiquidityAdapter extends BaseAdapter {
         lInflater = (LayoutInflater) ctx
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
+
+    public void setObjects(ArrayList<Category> objects) {
+        this.objects = objects;
+    }
+
     @Override
     public int getCount() {
         return objects.size();

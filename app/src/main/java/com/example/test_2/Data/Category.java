@@ -1,11 +1,12 @@
-package com.example.test_2;
+package com.example.test_2.Data;
 
 
+import com.example.test_2.R;
 
 public class Category {
     private String categoryName;
     private int categoryData;
-    int r=R.drawable.honey;
+    int r= R.drawable.honey;
 
     public String getCategoryName() {
         return categoryName;
