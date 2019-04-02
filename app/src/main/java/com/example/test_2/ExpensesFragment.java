@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.Toolbar;
 
 import com.github.mikephil.charting.charts.LineChart;
@@ -37,13 +38,13 @@ public class ExpensesFragment extends Fragment {
     int type;
     Toolbar toolbar;
     TextView sum;
+    Resources res;
+    ArrayList<Integer> mIcons;
 
     public ExpensesFragment() {
     }
 
-    Resources res;
 
-    ArrayList<Integer> mIcons;
 
     void getTypeIcons(){
         Bundle bundle=getArguments();
@@ -93,7 +94,12 @@ public class ExpensesFragment extends Fragment {
         sum.setText(String.valueOf(new MainDatabase(getActivity()).readDate(ReadType.SumOfExpence))+" грн");
         //----------------------------------------------------------------
         return view;
+    }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        Toast.makeText(getActivity(), "OnResume", Toast.LENGTH_SHORT).show();
     }
 
     void fillData(){
