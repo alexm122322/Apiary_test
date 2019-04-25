@@ -82,7 +82,7 @@ public class MainActivity extends AppCompatActivity
         if (id == R.id.nav_camera) {
             fragmentClass=BlankFragment.class;
         } else if (id == R.id.nav_gallery) {
-            fragmentClass=BlankFragment.class;
+            fragmentClass=BeeFamilyLog.class;
         } else if (id == R.id.nav_slideshow) {
             fragmentClass=BlankFragment.class;
         } else if (id == R.id.nav_manage) {

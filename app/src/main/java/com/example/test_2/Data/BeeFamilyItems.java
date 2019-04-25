@@ -81,13 +81,15 @@ public class BeeFamilyItems {
             if (cursor.moveToFirst()) {
                 do {
                     BeeFamilyItems beeFamilyItems = new BeeFamilyItems(cursor.getInt(1),
-                            cursor.getString(3),
-                            cursor.getInt(4),
-                            cursor.getInt(6));
+                            cursor.getString(2),
+                            cursor.getInt(3),
+                            cursor.getInt(5));
                     items.add(beeFamilyItems);
                 } while (cursor.moveToNext());
             }
         }
         return items;
     }
+
+
 }

@@ -10,6 +10,9 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import com.example.test_2.Data.BeeFamilyData;
+import com.example.test_2.Data.BeeFamilyItems;
+
 import java.util.ArrayList;
 
 public class MainDatabase extends SQLiteOpenHelper {
@@ -21,10 +24,12 @@ public class MainDatabase extends SQLiteOpenHelper {
     static final String categoryNameRow="name";
 
     String[] expanceCategory, incomeCategory;
+    Context context=null;
 
 
     public MainDatabase(Context context) {
         super(context, "ApiDatabase", null, 2);
+        this.context=context;
 
     }
 
@@ -48,7 +53,6 @@ public class MainDatabase extends SQLiteOpenHelper {
                 "id integer primary key autoincrement," +
                 "number integer ," +
                 "breed text," +
-                "beehive_type type," +
                 "bee_quine_old integer," +
                 "labled integer," +
                 "last_rev integer)");
@@ -61,8 +65,7 @@ public class MainDatabase extends SQLiteOpenHelper {
                 "date intager)");
 
 
-        ContentValues cv =new ContentValues();
-
+        addSomeFamilis(40,db);
 
     }
 
@@ -117,6 +120,16 @@ public class MainDatabase extends SQLiteOpenHelper {
             Cursor2.addRow(new Object[] { ""+ex.getMessage() });
             alc.set(1,Cursor2);
             return alc;
+        }
+    }
+    public void addSomeFamilis(int n,SQLiteDatabase db){
+        ContentValues cv = new ContentValues();
+        for(int i=0; i<n; i++) {
+            cv.put(BeeFamilyData.labled, 1);
+            cv.put(BeeFamilyData.beeQuineOld, 2018);
+            cv.put(BeeFamilyData.number, i+1);
+            cv.put(BeeFamilyData.breed,"UKR");
+            db.insert(BeeFamilyData.tableName, null, cv);
         }
     }
 

@@ -28,7 +28,7 @@ public class Income {
     Resources res;
     SQLiteDatabase db;
 
-    
+
     public Income(Context context) {
         this.context = context;
         res=context.getResources();

@@ -2,17 +2,22 @@ package com.example.test_2;
 
 import android.content.Context;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.test_2.Data.BeeFamilyItems;
@@ -21,14 +26,6 @@ import com.example.test_2.Data.Category;
 import java.util.ArrayList;
 
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link BeeFamilyLog.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link BeeFamilyLog#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class BeeFamilyLog extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -36,6 +33,8 @@ public class BeeFamilyLog extends Fragment {
     private static final String ARG_PARAM2 = "param2";
     ArrayList<BeeFamilyItems> items=null;
     ListView listView;
+    Toolbar toolbar;
+    FrameLayout frameLayout;
 
     // TODO: Rename and change types of parameters
 
@@ -72,6 +71,15 @@ public class BeeFamilyLog extends Fragment {
         listView=(ListView)v.findViewById(R.id.beeFamilyLogList);
         BeeFamilyLogAdapter adapter=new BeeFamilyLogAdapter(v.getContext(),items);
         listView.setAdapter(adapter);
+        View contenador=(View)container.getParent();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            toolbar=(Toolbar)contenador.findViewById(R.id.toolbar);
+        }
+
+        frameLayout=(FrameLayout)v.findViewById(R.id.BeeFamilyLogId);
+        ViewGroup.MarginLayoutParams params=(ViewGroup.MarginLayoutParams) frameLayout.getLayoutParams();
+        params.setMargins(params.leftMargin,toolbar.getHeight(),params.rightMargin,params.bottomMargin);
+        frameLayout.setLayoutParams(params);
         // Inflate the layout for this fragment
         return v;
     }
