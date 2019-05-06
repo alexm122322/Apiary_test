@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
@@ -35,6 +36,7 @@ public class BeeFamilyLog extends Fragment {
     ListView listView;
     Toolbar toolbar;
     FrameLayout frameLayout;
+    FloatingActionButton floatingActionButton;
 
     // TODO: Rename and change types of parameters
 
@@ -80,7 +82,14 @@ public class BeeFamilyLog extends Fragment {
         ViewGroup.MarginLayoutParams params=(ViewGroup.MarginLayoutParams) frameLayout.getLayoutParams();
         params.setMargins(params.leftMargin,toolbar.getHeight(),params.rightMargin,params.bottomMargin);
         frameLayout.setLayoutParams(params);
-        // Inflate the layout for this fragment
+
+        floatingActionButton=(FloatingActionButton)v.findViewById(R.id.floatingActionButton2);
+        floatingActionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
         return v;
     }
 

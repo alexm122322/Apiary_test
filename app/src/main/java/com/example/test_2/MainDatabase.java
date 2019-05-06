@@ -125,10 +125,10 @@ public class MainDatabase extends SQLiteOpenHelper {
     public void addSomeFamilis(int n,SQLiteDatabase db){
         ContentValues cv = new ContentValues();
         for(int i=0; i<n; i++) {
-            cv.put(BeeFamilyData.labled, 1);
-            cv.put(BeeFamilyData.beeQuineOld, 2018);
-            cv.put(BeeFamilyData.number, i+1);
-            cv.put(BeeFamilyData.breed,"UKR");
+            cv.put(BeeFamilyData.row_labled, 1);
+            cv.put(BeeFamilyData.row_beeQuineOld, 2018);
+            cv.put(BeeFamilyData.row_number, i+1);
+            cv.put(BeeFamilyData.row_breed,"UKR");
             db.insert(BeeFamilyData.tableName, null, cv);
         }
     }
